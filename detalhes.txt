@@ -1,0 +1,28 @@
+import React, { useState, useEffect } from 'react';
+
+function BuscaDados() {
+  const [dados, setDados] = useState([]);
+  const [carregando, setCarregando] = useState(true);
+
+  useEffect(() => {
+    async function buscarDados() {
+      try {
+        const response = await fetch('https://api.exemplo.com/dados');
+        setDados(await response.json());
+      } catch (error) {
+        console.error('Erro:', error);
+      }
+      setCarregando(false);
+    }
+
+    buscarDados();
+  }, []);
+
+  return (
+    <div>
+      {carregando ? <p>Carregando...</p> : <ul>{dados.map(item => <li key={item.id}>{item.nome}</li>)}</ul>}
+    </div>
+  );
+}
+
+export default BuscaDados;
